@@ -1,7 +1,7 @@
-// current animation state (idle, run, jump, etc.)
+
 let state = 'idle';
 
-// get dropdown element and update animation state when user selects a new option
+
 const dropdown = document.getElementById('animation');
 dropdown.addEventListener('change', function(e) {
     state = e.target.value;
@@ -12,25 +12,24 @@ dropdown.addEventListener('change', function(e) {
 const canvas = document.getElementById('can');
 const con = canvas.getContext('2d');
 
-const canw = canvas.width = 600;   // canvas width
-const canh = canvas.height = 300;  // canvas height
+const canw = canvas.width = 600;   
+const canh = canvas.height = 300;  
 
-// load the sprite sheet image
+
 const img = new Image();
-const sw = 575;   // width of one sprite frame
-const sh = 525;   // height of one sprite frame
+const sw = 575;  
+const sh = 525;  
 img.src = '/shadow_dog.png';
 
 
-// === Sprite Control Variables ===
-let sf = 5;     // slow factor to control animation speed
-let gf = 0;     // global frame count
 
-// store sprite frames per animation state
+let sf = 5;    
+let gf = 0;    
+
+
 const spriteanimation = [];
 
 
-// === Define Animation States and Their Frame Counts ===
 const animationstate = [
     { name: 'idle',    frames: 7 },
     { name: 'jump',    frames: 7 },
@@ -45,49 +44,46 @@ const animationstate = [
 ];
 
 
-// === Populate Frame Locations for Each Animation ===
-// Each state gets an array of frame positions (x, y)
 animationstate.forEach((State, index) => {
     let frames = { loc: [] };
 
     for (let i = 0; i < State.frames; i++) {
-        let posx = i * sw;       // frame x position in sprite sheet
-        let posy = index * sh;   // frame y position depends on the state index
-        frames.loc.push({ x: posx, y: posy }); // store frame position
+        let posx = i * sw;      
+        let posy = index * sh;   
+        frames.loc.push({ x: posx, y: posy });
     }
 
-    spriteanimation[State.name] = frames;  // store all frame positions for this state
+    spriteanimation[State.name] = frames;  
 });
 
-console.log(spriteanimation); // debug: view the full sprite frame map
+console.log(spriteanimation); 
 
 
 
-// === Game Loop ===
+
 function loop() {
-    con.clearRect(0, 0, canw, canh);  // clear the previous frame
+    con.clearRect(0, 0, canw, canh);  
 
-    // calculate current animation frame
+   
     let pos = Math.floor(gf / sf) % spriteanimation[state].loc.length;
 
-    // get the frame's x and y position from pre-stored data
-    let x = sw * pos;  // not used (you already calculate y from array below)
+   
+    let x = sw * pos;  
     let y = spriteanimation[state].loc[pos].y;
 
-    // draw the current frame from the sprite sheet
     con.drawImage(
         img,
-        spriteanimation[state].loc[pos].x, // source x
-        y,                                 // source y
-        sw,                                // source width
-        sh,                                // source height
-        0, 0,                              // destination x, y
-        canw, canh                         // scale to full canvas size
+        spriteanimation[state].loc[pos].x, 
+        y,                           
+        sw,                             
+        sh,                               
+        0, 0,                             
+        canw, canh                         /
     );
 
-    gf++; // move to the next frame (this works with sf to control speed)
+    gf++;
 
-    requestAnimationFrame(loop); // continue the loop
+    requestAnimationFrame(loop); 
 }
 
-loop(); // start the game loop
+loop(); 
