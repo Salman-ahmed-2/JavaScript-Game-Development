@@ -1,0 +1,63 @@
+</head><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javascript Game</title>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body{
+            overflow: hidden;
+        }
+        #can{
+            top: 50%;
+            left: 50%;
+            position: absolute;
+            transform: translate(-50%,-50%);
+            /* width: 100%;
+            height: 100%; */
+            
+
+            /* background: linear-gradient(130deg,yellow,blue,red); */
+            /* background-color:skyblue; */
+
+        
+       
+        }
+        #f,#play,#s{
+            display: none;
+        }
+    
+    </style>
+
+<body>
+    <canvas id="can"></canvas>
+
+    <img id="play" src="/shadow_dog.png">
+ 
+   <div class="control">
+        <label for="animation">choose animation</label>
+        <select id="animation" name="animation">
+            <option value="idle">idle</option>
+            <option value="jump">jump</option>
+            <option value="sit">sit</option>
+            <option value="run">run</option>
+            <option value="dizzy">dizzy</option>
+            <option value="roll">roll</option>
+            <option value="bite">bite</option>
+            <option value="ko">ko</option>
+            <option value="gethit">gethit</option>
+        </select>
+    </div>
+   
+
+
+    <script  src="script.js"></script>
+</body>
+</html>
