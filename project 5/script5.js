@@ -1,4 +1,4 @@
-// 🎨 Main visible canvas
+
 const canvas = document.getElementById('can');
 const con = canvas.getContext('2d');
 
@@ -6,7 +6,7 @@ const con = canvas.getContext('2d');
 const canw = canvas.width = window.innerWidth;
 const canh = canvas.height = window.innerHeight;
 
-// 🕵️ Hidden canvas for pixel-perfect collision detection using colors
+
 const canvas1 = document.getElementById('coll');
 const coll = canvas1.getContext('2d', { willReadFrequently: true });
 
@@ -14,20 +14,19 @@ const coll = canvas1.getContext('2d', { willReadFrequently: true });
 const collw = canvas1.width = window.innerWidth;
 const collh = canvas1.height = window.innerHeight;
 
-// 🕒 Game timing and state variables
+
 let reveninter = 761;      // Interval (currently unused but can be used to slow down spawning)
 let lastt = 0;            // Last frame timestamp
 let timetonext = 0;       // Time accumulator for spawning ravens
 let gf = 0;               // Global frame counter
-let points = 0;           // Score
-con.font = '50px Impact'; // Score font
+let points = 0;           
+con.font = '50px Impact'; 
 
-// 🐦 Array of active ravens on screen
+
 let revens = [];
 let explosion =[];
 let smoke=[];
 
-// 🐦 Raven class - represents a flying object to hit
 class raven {
   constructor() {
     this.width = 100;
@@ -55,7 +54,7 @@ class raven {
 
     this.markdele = false; // Will be set true if hit
 
-    // 🟪 Unique color for collision detection (used on hidden canvas)
+  
     this.rancol = [
       Math.floor(Math.random() * 255),
       Math.floor(Math.random() * 255),
@@ -64,7 +63,7 @@ class raven {
     this.color = 'rgb(' + this.rancol[0] + ',' + this.rancol[1] + ',' + this.rancol[2] + ')';
   }
 
-  // ⏱️ Movement & animation logic
+ 
   update(deltatime) {
     // Bounce off top and bottom
     if (this.y < 0 || this.y > canh - this.height) {
@@ -94,9 +93,9 @@ smoke.push(new Smoke(this.x,this.y,this.width,this.color));
     }
   }
 
-  // 🎨 Draw to both canvases
+  
   draw() {
-    // Draw hitbox with solid color on hidden canvas
+  
     coll.fillStyle = this.color;
     coll.fillRect(this.x, this.y, this.width, this.height);
 
@@ -116,7 +115,7 @@ smoke.push(new Smoke(this.x,this.y,this.width,this.color));
 };
 
 
-// Explosion class handles image/sound, position, animation frames, and rotation
+
 class Explosion {
     constructor(x, y,size) {
         // Load explosion image (spritesheet)
@@ -237,7 +236,7 @@ function gameover(){
 
 
 
-// 🧾 Draw score text (can reuse this style in all games)
+
 function point() {
   con.fillStyle = 'black'; // Shadow
   con.fillText('score: ' + points, 52, 77);
@@ -245,7 +244,7 @@ function point() {
   con.fillText('score: ' + points, 50, 75);
 }
 
-// 🎯 Click detection - get pixel color under mouse and match it with raven color
+
 window.addEventListener('click', function (e) {
   const canvasPos = canvas1.getBoundingClientRect(); // Always subtract canvas position
   const x = e.x - canvasPos.left;
@@ -269,7 +268,7 @@ window.addEventListener('click', function (e) {
   }
 });
 
-// 🔁 Game loop
+
 function loop(timestamp) {
   // Clear both canvases
   con.clearRect(0, 0, canw, canh);
@@ -278,12 +277,11 @@ function loop(timestamp) {
   // Draw score
   point();
 
-  // ⏱️ Time tracking for deltaTime-based animation
   let deltatime = timestamp - lastt;
   lastt = timestamp;
   timetonext += deltatime;
 
-  // ⏳ Spawn new raven after time delay
+
   if (timetonext > reveninter) {
     revens.push(new raven());
     timetonext = 0;
@@ -294,21 +292,13 @@ function loop(timestamp) {
     });
   };
 
-  // 📦 Update & draw only 1/8th of ravens for performance
-  // for (let i = 0; i < revens.length / 8; i++) {
-  //   revens[i].update(deltatime); 
-  //   revens[i].draw(); 
-  //   }
+
   [...smoke,...revens,...explosion].forEach(object=>object.update(deltatime));
   [...smoke,...revens,...explosion].forEach(object=>object.draw());
  
 
 
-    // for (let i = 0; i < explosion.length; i++) {
-    //     explosion[i].update(deltatime); // Update animation
-    //     explosion[i].draw();   // Draw explosion
-    // }
-  // 🧹 Remove ravens marked for deletion
+   
   revens = revens.filter(object => !object.markdele);
   explosion = explosion.filter(object => !object.markdele);
 
